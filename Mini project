@@ -1,0 +1,151 @@
+CODE:
+package jdbc;
+ 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+ 
+/**
+* @param args the command line arguments*/
+class insertion{
+void add(){
+try{
+Scanner obj1 = new Scanner(System.in);
+Class.forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","root");
+System.out.println("Add student");
+System.out.println("stuID:");
+int x = obj1.nextInt();
+System.out.println("stu NAME:");
+String y = obj1.next();
+PreparedStatement p = (PreparedStatement) con.prepareStatement("insert into info values(?,?)");
+p.setInt(1, x); 
+p.setString(2, y); 
+if(p.executeUpdate() == 1)
+{
+System.out.println("ADDED SUCESSFULY"); 
+}
+else
+{
+System.out.println("INVALID VALUES"); 
+}
+}
+catch(ClassNotFoundException | SQLException e) 
+{
+System.out.println(e); 
+}
+}
+}
+ 
+class deletion{
+void remove(){
+try{
+Scanner obj = new Scanner(System.in);
+Class.forName("com.mysql.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","root");
+System.out.println("delete name");
+System.out.println(" NAME:");
+String y = obj.next();
+PreparedStatement p = (PreparedStatement) con.prepareStatement("delete from info where name = ?");
+           p.setString(1, y);
+           if(p.executeUpdate()==1){
+           System.out.println("DELETED SUCESSFULY");}
+           else{
+               System.out.println("THERE IS NO student IN THE GIVEN student NAME");
+           }
+}
+catch(ClassNotFoundException | SQLException e)
+{
+System.out.println(e); 
+}
+}
+}
+class updation{
+    void reset(){
+        try{
+           Scanner obj = new Scanner(System.in);
+           Class.forName("com.mysql.jdbc.Driver");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","root");
+           System.out.println("RESET STUDENT DETAILS BASED ON sTUDENT ID");
+           System.out.println("stu ID:");
+           int x = obj.nextInt();
+           System.out.println("student NAME:");
+           String y = obj.next();
+         
+           PreparedStatement p = (PreparedStatement) con.prepareStatement("update info set name=? where id=?");
+            p.setInt(2, x);
+            p.setString(1, y);
+           
+            if(p.executeUpdate()==1){
+           System.out.println("UPDATED SUCESSFULY");}
+           else{
+               System.out.println("THERE IS NO student IN THE GIVEN  ID");
+           }
+        }
+        catch(ClassNotFoundException | SQLException e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+class view{
+    void display(){
+        try{
+           Scanner obj = new Scanner(System.in);
+           Class.forName("com.mysql.jdbc.Driver");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel","root","root");
+           PreparedStatement ps = (PreparedStatement) con.prepareStatement("select * from info");
+           ps.executeQuery();
+           ResultSet rs = ps.executeQuery();
+           while(rs.next())
+           {
+         System.out.println(rs.getInt("id")+" , "+rs.getString("name")+",");
+           }
+        }
+        catch(ClassNotFoundException | SQLException e)
+        {
+            System.out.println(e);
+        }
+    }
+}
+public class JDBC
+{
+ 
+    public static void main(String[] args)
+    {
+        int j=1;
+        Scanner obj3 = new Scanner(System.in);
+        while(j>0){
+        System.out.println("STUDENT");
+        System.out.println("Choose any option");
+        System.out.println("1.Add STUDENT\n2.Delete STUDENT\n3.UPDATE Details\n4.Display\n.Press any key for exit");
+        System.out.println("Enter your option :");
+        String a=obj3.next();
+        if("1".equals(a)){
+            insertion i=new insertion();
+            i.add();
+        }
+        else if("2".equals(a)){
+            deletion d=new deletion();
+            d.remove();
+        }
+        else if("3".equals(a)){
+            updation re=new updation();
+            re.reset();
+        }
+        else if("4".equals(a)){
+            view v=new view();
+            v.display();
+        }
+       
+        else{
+            System.out.println("Thankyou");
+            return;
+        }
+    }
+    }
+}
+                             
